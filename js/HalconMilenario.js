@@ -11,6 +11,7 @@ let NuevaPosicionY2;
 let NuevaPosicionX3;
 let NuevaPosicionY3;
 let Nivel = 100
+let Bala = []
 
 
 const CambioPosicionX1 =()=>{
@@ -61,11 +62,19 @@ const Canvas = document.querySelector("#canvas")
       const Clear = ()=>{
         context.clearRect(0,0,1330,630 )
       }
+
     const Motor = ()=>{
     HalconMilenario.NewPosition()
     Clear()
+
+
     
-    
+    if(Bala.length>0){
+      Bala.forEach(bala=>{
+        bala.DrawCarrito()
+        bala.Disparo()
+      })
+    }
     HalconMilenario.DrawCarrito()
     Enemies()
     Enemies2()
@@ -75,7 +84,7 @@ const Canvas = document.querySelector("#canvas")
     setInterval(Motor,15)
 
      const Enemies =  ()=>{
-    Frames +=1
+       Frames +=1
 
 
 
@@ -200,7 +209,6 @@ const Canvas = document.querySelector("#canvas")
        }
      })
       }
-  console.log("hola")
   class Construccion{
     constructor(width,height,x,y, url){
       this.width = width
@@ -222,7 +230,7 @@ const Canvas = document.querySelector("#canvas")
         this.y +=this.velocidadY
     }
     Disparo(){
-      this.y += 2
+      this.y -= 9
     }
   }
   
@@ -235,6 +243,14 @@ const Canvas = document.querySelector("#canvas")
   })
   
   document.addEventListener("keydown",(evento)=>{
+    Bala.push( new Construccion (3,40,HalconMilenario.x+47,HalconMilenario.y,"Imagenes/Luz.png"))
+    let Disparo = new Audio()
+    Disparo.src = "../Musica/Disparo.wav"
+    Disparo.play()
+    Bala.forEach(bala=>{
+      bala.DrawCarrito()
+    })
+    
     switch(evento.key) {
         case "ArrowLeft":
             HalconMilenario.velocidadX =-6
