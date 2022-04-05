@@ -42,12 +42,32 @@ document.body.addEventListener("click",(e)=>{
         const CazaEstelar = document.querySelector("#cazaEstelar")
         CazaEstelar.classList.remove("ocultar")
         CazaEstelar.classList.add("cazaEstelar")
+        const LlegadaNave = new Audio()
+        LlegadaNave.src="../Musica/naveLlegando.mp3"
+        LlegadaNave.play()
+
+        const ReproducirLlegadaDeNave =()=>{
+            const LlegadaNave = new Audio()
+            LlegadaNave.src="../Musica/naveLlegando.mp3"
+            LlegadaNave.play()
+        }
+        const RepetirSonidoNave = ()=>{
+            let SonidoLlegandoNave = setTimeout(ReproducirLlegadaDeNave,1500)
+            let SonidoLlegandoNave3 = setTimeout(ReproducirLlegadaDeNave,3000)
+        }
+        RepetirSonidoNave()
+
+
         const Alcon = document.querySelector("#Milenario")
         Alcon.classList.remove("ocultar")
         Alcon.classList.add("halcon")
+
+
         const Interceptor = document.querySelector("#Interceptor")
         Interceptor.classList.remove("ocultar")
         Interceptor.classList.add("Interceptor")
+
+
 
     }
 })

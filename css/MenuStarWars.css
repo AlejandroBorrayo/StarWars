@@ -289,7 +289,7 @@ visibility: hidden;
   margin-right: 70%;
   margin-top: 300px;
   position: absolute;
-  animation: cazaEstelar 3s 1;
+  animation: cazaEstelar 2s 1;
 
 }
 .cazaEstelar:hover{
@@ -306,7 +306,7 @@ visibility: hidden;
   margin-right: 40%;
   margin-top: 300px;
   position: absolute;
-  animation: Milenario  4s 1;
+  animation: Milenario  3s 1;
 
 }
 .halcon:hover{
@@ -324,7 +324,7 @@ visibility: hidden;
   margin-right: 10%;
   margin-top: 300px;
   position: absolute;
-  animation: Interceptor  5s 1;
+  animation: Interceptor  4.5s 1;
 
 }
 .Interceptor:hover{
