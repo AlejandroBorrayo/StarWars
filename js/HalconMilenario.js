@@ -200,7 +200,7 @@ const Canvas = document.querySelector("#canvas")
        }
      })
       }
-  
+  console.log("hola")
   class Construccion{
     constructor(width,height,x,y, url){
       this.width = width
