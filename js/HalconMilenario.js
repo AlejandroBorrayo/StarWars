@@ -10,10 +10,14 @@ let NuevaPosicionX2;
 let NuevaPosicionY2;
 let NuevaPosicionX3;
 let NuevaPosicionY3;
-let Nivel = 100
-let Bala = []
+let Balas = []
+let Liquidados = 0
+let balasEnemigos1=[]
+let balasEnemigos2=[]
+let balasEnemigos3=[]
+ 
 
-
+     
 const CambioPosicionX1 =()=>{
   const PosiblesPosicionesX1 = [2,4,6,-2,-3,-1, 0, 0,0]
   const PosiblesPosicionesY1 = [0,2,,7,-1,4,0,4,8]
@@ -63,23 +67,65 @@ const Canvas = document.querySelector("#canvas")
         context.clearRect(0,0,1330,630 )
       }
 
-    const Motor = ()=>{
-    HalconMilenario.NewPosition()
-    Clear()
+      const Impactos=()=>{
 
-
+      
+        Enemigos.forEach((enemigo,index_enemigo)=>{
+          Balas.forEach((bala,index_bala)=>{
+            if(bala.collision(enemigo)){
+              Enemigos.splice(index_enemigo,1)
+              Balas.pop()
+              Liquidados+=1
+            }
+          }) 
     
-    if(Bala.length>0){
-      Bala.forEach(bala=>{
-        bala.DrawCarrito()
-        bala.Disparo()
-      })
-    }
+        })
+        Enemigos2.forEach((enemigo,index_enemigo)=>{
+  
+          Balas.forEach((bala,index_bala)=>{
+
+            if(bala.collision(enemigo)){
+              Enemigos2.splice(index_enemigo,1)
+              Balas.pop()
+              Liquidados+=1
+            } 
+          }) 
+    
+        })
+        Enemigos3.forEach((enemigo,index_enemigo)=>{
+  
+          Balas.forEach((bala,index_bala)=>{
+
+            if(bala.collision(enemigo)){
+              Enemigos3.splice(index_enemigo,1)
+              Balas.pop()
+              Liquidados+=1
+            } 
+          }) 
+    
+        })
+        
+      }
+
+
+    const Motor = ()=>{   
+      const ImprimirLiquidados = document.querySelector("h1")
+      ImprimirLiquidados.textContent = Liquidados  
+      Clear()
+      Balas.forEach(bala=>{
+      bala.DrawCarrito()
+      bala.Disparo()
+      HalconMilenario.NewPosition()
+
+    })
+
+    Impactos()
     HalconMilenario.DrawCarrito()
     Enemies()
     Enemies2()
     Enemies3()
   }
+
   
     setInterval(Motor,15)
 
@@ -111,6 +157,10 @@ const Canvas = document.querySelector("#canvas")
           Enemigos[i].y += NuevaPosicionY1
           Enemigos[i].DrawCarrito()
          }
+     }
+
+     if(Frames % 80 === 0){
+
      }
     if(Frames % 200 === 0){
       let xMax = 1330
@@ -225,14 +275,30 @@ const Canvas = document.querySelector("#canvas")
       const ctx = context
       ctx.drawImage(this.imgen, this.x, this.y, this.width, this.height)
     }
+
     NewPosition(){
         this.x +=this.velocidadX
         this.y +=this.velocidadY
     }
     Disparo(){
-      this.y -= 9
+      this.y -= 8
     }
+
+    collision(item){
+
+      return (
+          this.x < item.x + item.width &&
+          this.x+ this.width > item.x &&
+          this.y < item.y + item.height &&
+          this.y + this.height > item.y
+      )
   }
+  }
+ 
+  const Calabera = new Construccion (100,100,3,3,"Imagenes/Calabera-removebg-preview.png")
+  Calabera.DrawCarrito()
+  
+
   
   const HalconMilenario = new Construccion(100,100,225,500,"Imagenes/milenario-removebg-preview.png")
   HalconMilenario.DrawCarrito()
@@ -243,13 +309,11 @@ const Canvas = document.querySelector("#canvas")
   })
   
   document.addEventListener("keydown",(evento)=>{
-    Bala.push( new Construccion (3,40,HalconMilenario.x+47,HalconMilenario.y,"Imagenes/Luz.png"))
+    Balas.push( new Construccion (3,40,HalconMilenario.x+47,HalconMilenario.y,"Imagenes/Luz.png"))
     let Disparo = new Audio()
     Disparo.src = "../Musica/Disparo.wav"
     Disparo.play()
-    Bala.forEach(bala=>{
-      bala.DrawCarrito()
-    })
+ 
     
     switch(evento.key) {
         case "ArrowLeft":
@@ -272,6 +336,7 @@ const Canvas = document.querySelector("#canvas")
     HalconMilenario.velocidadX = 0
     HalconMilenario.velocidadY = 0
   })
+
     
   
      

@@ -106,7 +106,7 @@ body{
   
 canvas{
     position: relative;
-    border: solid 2px red;
+    border: solid 2px rgb(30, 29, 29);
 }
   
   
