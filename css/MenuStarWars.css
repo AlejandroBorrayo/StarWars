@@ -306,7 +306,7 @@ visibility: hidden;
   margin-right: 40%;
   margin-top: 300px;
   position: absolute;
-  animation: Milenario  3s 1;
+  animation: Milenario  3.5s 1;
 
 }
 .halcon:hover{
@@ -324,7 +324,7 @@ visibility: hidden;
   margin-right: 10%;
   margin-top: 300px;
   position: absolute;
-  animation: Interceptor  4.5s 1;
+  animation: Interceptor  4.3s 1;
 
 }
 .Interceptor:hover{
