@@ -1,19 +1,31 @@
 let NaveParaJugar;
 const sonidoR2d2 = new Image()
+const audio = new Audio();
+audio.src = "../Musica/StarWars.wav";
+audio.loop = true
 
 
     const Musica = ()=>{
-        const audio = new Audio();
-        audio.src = "../Musica/StarWars.wav";
-        audio.loop = true
+
         audio.play()
     }
-    let Time;
-    const Empezar=()=>{
-        Time = setTimeout(Musica, 12500)
+    
+       let Time = setTimeout(Musica, 12500)
+       
+    
 
+document.addEventListener("keydown",(e)=>{
+    if (e.code === "Enter"){
+        const QuitarOmitir = document.querySelector(".enter")
+        QuitarOmitir.remove()
+        clearTimeout(Time)
+        if(audio.play()){
+            return 
+        } else{
+            audio.play()
+        }
     }
-Empezar()
+})
 let Boton = document.querySelector(".Jugar")
 document.addEventListener("keydown",(e)=>{
     console.log(e.key)
@@ -120,6 +132,8 @@ const ElegisteTuNave=(nave)=>{
         NaveElegida.classList.add("NaveElegida")
         document.body.appendChild(NaveElegida)
         NaveParaJugar = "Interceptor"
+        
+        
     }
     let Time = setTimeout(BorrarTodo,3000)
     
@@ -136,7 +150,13 @@ const BorrarTodo = ()=>{
 }
 
 const Start = ()=>{
-    window.location.href ="../HalconMilenario.html"
+    if(NaveParaJugar === "cazaEstelar"){
+    window.location.href ="../Caza.html"
+    } else if(NaveParaJugar === "Milenario"){
+        window.location.href ="../HalconMilenario.html"
+    } else if(NaveParaJugar === "Interceptor") {
+        window.location.href ="../Interceptor.html"
+    }
 
 }
 

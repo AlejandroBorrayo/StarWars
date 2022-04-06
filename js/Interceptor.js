@@ -465,7 +465,7 @@ const EmpiezaElJuego=()=>{
     
   
     
-    const HalconMilenario = new Construccion(100,100,225,500,"Imagenes/casaEstelarJuego-removebg-preview.png")
+    const HalconMilenario = new Construccion(100,100,225,500,"Imagenes/interceptorJuego_preview_rev_1.png")
     HalconMilenario.DrawCarrito()
 
     if(ModoDeJuego === "Teclado" ){

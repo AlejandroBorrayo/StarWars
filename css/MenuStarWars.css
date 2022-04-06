@@ -472,3 +472,9 @@ img{
   right: 20px;
 }
 
+.enter{
+  position: absolute;
+  margin-right: 20px;
+  width: 20%;
+  height: 70px;
+}
