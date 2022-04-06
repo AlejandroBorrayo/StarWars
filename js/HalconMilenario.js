@@ -16,13 +16,16 @@ let balasEnemigos1=[]
 let balasEnemigos2=[]
 let balasEnemigos3=[]
 let ModoDeJuego;
-const AudioPerdiste = new Audio()
-AudioPerdiste.src ="/Musica/PODER.wav"
-AudioPerdiste.play()
+const AudioYouDontKnow = new Audio()
+AudioYouDontKnow.src ="/Musica/PODER.wav"
+AudioYouDontKnow.play()
+const MusicaImperio = new Audio()
+MusicaImperio.src ="/Musica/MarchaImperial.wav"
 
 // const ModoDeJuegoTeclado = document.querySelector(".Teclado")
 // const ModoDeJuegoMouse = document.querySelector(".Mouse")
 document.addEventListener("click",(e)=>{
+
   if(e.target.classList.contains("Teclado")){
     const BorrarModoTeclado = document.querySelector(".Teclado")
     const BorrarModoMOuse = document.querySelector(".Mouse")
@@ -31,7 +34,9 @@ document.addEventListener("click",(e)=>{
     BorrarModoMOuse.remove()
     Texto.remove()
     ModoDeJuego = "Teclado"
-    EmpiezaElJuego()
+    MostrarInstrucciones()
+    setTimeout(BorrarInstrucciones,8000)
+    setTimeout(EmpiezaElJuego,9000)
 
   } else if(e.target.classList.contains("Mouse")){
     const BorrarModoTeclado = document.querySelector(".Teclado")
@@ -42,12 +47,35 @@ document.addEventListener("click",(e)=>{
     Texto.remove()
 
     ModoDeJuego = "Mouse"
-
-    EmpiezaElJuego()
+    MostrarInstrucciones()
+    setTimeout(BorrarInstrucciones,8000)
+    setTimeout(EmpiezaElJuego,9000)
+    
   }
 })
+
+
+
+
+const MostrarInstrucciones=()=>{
+  const Instrucciones = document.createElement("img")
+  Instrucciones.src="/Imagenes/Instrucciones-removebg-preview.png"
+  Instrucciones.classList.add("Instrucciones")
+  document.body.appendChild(Instrucciones)
+}
+const BorrarInstrucciones=()=>{
+  const Borrar = document.querySelector(".Instrucciones")
+  Borrar.remove()
+}
+
 const EmpiezaElJuego=()=>{
 
+
+  MusicaImperio.play()
+  //setTimeout(MusicaMarchaImperial, 1000)
+  const canvas = document.querySelector(".canvas")
+  canvas.classList.remove()
+  canvas.classList.add("canvasJugar")
      
   const CambioPosicionX1 =()=>{
     const PosiblesPosicionesX1 = [2,4,6,-2,-3,-1, 0, 0,0]
@@ -90,6 +118,7 @@ const EmpiezaElJuego=()=>{
           AudioNAve.pause()
           const Perdiste = new Audio()
           Perdiste.src = "/Musica/Iam.wav"
+          MusicaImperio.pause()
           Perdiste.play()
 
           const ImgPerdiste = document.createElement("img")
@@ -136,19 +165,7 @@ const EmpiezaElJuego=()=>{
       AudioNAve.src="../Musica/sonidoNave.wav"
       AudioNAve.loop = true
       AudioNAve.play()
-      const MusicaPrincipal = ()=>{
-        const Principal = new Audio()
-        Principal.src ="../Musica/StarWars.wav"
-        Principal.loop = true
-        Principal.play()
-            
-      const ReproducirSonidoPrincipal = ()=>{
-        setTimeout(MusicaPrincipal,12500)
-      }
-      
-      ReproducirSonidoPrincipal()
-    
-    }
+
 
 
   

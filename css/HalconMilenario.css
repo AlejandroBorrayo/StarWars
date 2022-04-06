@@ -1,5 +1,7 @@
 body{
     text-align: center;
+    cursor: url("./arturo.png"),progress; 
+
   }
   
   
@@ -103,9 +105,14 @@ body{
   
   
   
-canvas{
+.canvas{
+    position: relative;
+    cursor: url("./arturo.png"),progress; 
+}
+.canvasJugar{
     position: relative;
     border: solid 2px red;
+    cursor: auto; 
 }
   
 .calavera{
@@ -168,7 +175,7 @@ h1{
     position: absolute;
     margin-left: 57%;
     margin-top: 250px;
-
+    cursor: url("./arturo.png"),progress; 
 }
 .btnGameOver{
     font-size: 40px;
@@ -178,6 +185,7 @@ h1{
 }
 .btnGameOver:hover{
     padding: 24px;
+    cursor: url("./arturo.png"),progress; 
 
 }
 .divIraMenu{
@@ -194,6 +202,7 @@ h1{
 .Teclado:hover{
     width:27%;
     height: 420px;
+    cursor: url("./arturo.png"),progress; 
 }
 .Mouse{
     margin-top: 240px;
@@ -204,6 +213,7 @@ h1{
 .Mouse:hover{
     width:34%;
     height: 270px;
+    cursor: url("./arturo.png"),progress; 
 }
 h2{
     margin-left: 450px;
@@ -212,4 +222,11 @@ h2{
     font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     color: white;
     position: absolute;
+}
+
+.Instrucciones{
+    margin-right: 10%;
+    margin-top: 30px;
+    width: 80%;
+    height: 500px;
 }

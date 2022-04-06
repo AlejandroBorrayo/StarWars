@@ -1,4 +1,6 @@
 let NaveParaJugar;
+const sonidoR2d2 = new Image()
+
 
     const Musica = ()=>{
         const audio = new Audio();
@@ -95,7 +97,7 @@ const ElegisteTuNave=(nave)=>{
     const NaveElegida = document.createElement("img")
     const NaveElegidaTexto = document.createElement("img")
     if(nave === "cazaEstelar"){
-        NaveElegidaTexto.src = "../Imagenes/TextoCazaEstelar-removebg-preview.png"
+        NaveElegidaTexto.src = "../Imagenes/ElegisteCaza-removebg-preview.png"
         NaveElegidaTexto.classList.add("NaveElegidaTexto")
         document.body.appendChild(NaveElegidaTexto)
         NaveElegida.src="../Imagenes/cazaEstelar.png"
@@ -103,7 +105,7 @@ const ElegisteTuNave=(nave)=>{
         document.body.appendChild(NaveElegida)
         NaveParaJugar = "cazaEstelar"
     } else if(nave === "Milenario"){
-        NaveElegidaTexto.src = "../Imagenes/TextoHalconMilenario-removebg-preview.png"
+        NaveElegidaTexto.src = "../Imagenes/ElegisteHalcon-removebg-preview.png"
         NaveElegidaTexto.classList.add("NaveElegidaTexto")
         document.body.appendChild(NaveElegidaTexto)
         NaveElegida.src="../Imagenes/AlconMilenario-removebg-preview.png"
@@ -111,7 +113,7 @@ const ElegisteTuNave=(nave)=>{
         document.body.appendChild(NaveElegida)
         NaveParaJugar = "Milenario"
     } else if(nave === "Interceptor"){
-        NaveElegidaTexto.src = "../Imagenes/TextoInterceptor-removebg-preview.png"
+        NaveElegidaTexto.src = "../Imagenes//ElegisteRZ-1-removebg-preview.png"
         NaveElegidaTexto.classList.add("NaveElegidaTexto")
         document.body.appendChild(NaveElegidaTexto)
         NaveElegida.src="../Imagenes/interceptorSeleccion-removebg-preview.png"
@@ -138,6 +140,8 @@ const Start = ()=>{
 
 }
 
-
-
-
+document.addEventListener("click",()=>{
+    const sonidoR2d2 = new Audio()
+    sonidoR2d2.src = "../Musica/sonidodelArturo.wav"
+    sonidoR2d2.play()
+})

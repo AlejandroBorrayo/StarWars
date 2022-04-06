@@ -6,6 +6,7 @@ html{
 body{
   text-align: center;
   height: 600px;
+  cursor: url("./arturo.png"),progress;
 }
 
 
@@ -217,9 +218,11 @@ visibility: hidden;
   background-color: rgb(20, 20, 20,.5);
   padding:30px 50px ;
   position: relative;
+  cursor: url("./arturo.png");  
+
 }
 .Jugar:hover{
-  cursor: pointer;
+  cursor: url("./arturo.png"),progress; 
   font-size:30px;
 }
 
@@ -298,7 +301,8 @@ visibility: hidden;
   margin-right: 70%;
   margin-top: 300px;
   position: absolute;
-  cursor: pointer;
+  cursor: url("./arturo.png"),progress;
+
 }
 .halcon{
   width: 19%;
@@ -306,7 +310,7 @@ visibility: hidden;
   margin-right: 40%;
   margin-top: 300px;
   position: absolute;
-  animation: Milenario  3.5s 1;
+  animation: Milenario  3s 1;
 
 }
 .halcon:hover{
@@ -315,7 +319,8 @@ visibility: hidden;
   margin-right: 40%;
   margin-top: 300px;
   position: absolute;
-  cursor: pointer;
+  cursor: url("./arturo.png"),progress;
+
 }
 
 .Interceptor{
@@ -333,7 +338,8 @@ visibility: hidden;
   margin-right: 10%;
   margin-top: 300px;
   position: absolute;
-  cursor: pointer;
+  cursor: url("./arturo.png"),progress;
+
 }
 
 .selecciona{
