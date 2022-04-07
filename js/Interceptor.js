@@ -1,9 +1,24 @@
 let Sonar;
+let Nivel2;
+let Iniciar;
+let EstaEnNivel2 = false
+
+
+const Nivel1 =()=>{
+  const level1 = document.createElement("img")
+  level1.src = "/Imagenes/Nivel1-removebg-preview.png"
+  level1.classList.add("level1")
+  document.body.appendChild(level1)
+  const EliminarNivel1 = ()=>{
+    level1.remove()
+  }
+  setTimeout(EliminarNivel1,3500)
+}
 let Frames = 0 ;
 let Enemigos = []
 let Enemigos2 = []
 let Enemigos3 = []
-let Naves = ["Imagenes/naveMaligna3-removebg-preview.png","Imagenes/naveMaligna2-removebg-preview.png"]
+let Naves = ["Imagenes/naveMaligna3-removebg-preview.png","Imagenes/naveMaligna2-removebg-preview.png","Imagenes/ghostJuego.png","Imagenes/naveMaligna1-removebg-preview.png"]
 let NuevaPosicionX1;
 let NuevaPosicionY1;
 let NuevaPosicionX2;
@@ -20,6 +35,7 @@ const AudioYouDontKnow = new Audio()
 AudioYouDontKnow.src ="/Musica/PODER.wav"
 const MusicaImperio = new Audio()
 MusicaImperio.src ="/Musica/MarchaImperial.wav"
+
 
 // const ModoDeJuegoTeclado = document.querySelector(".Teclado")
 // const ModoDeJuegoMouse = document.querySelector(".Mouse")
@@ -47,8 +63,10 @@ document.addEventListener("click",(e)=>{
 
     ModoDeJuego = "Mouse"
     MostrarInstrucciones()
+    setTimeout(Nivel1,8100)
     setTimeout(BorrarInstrucciones,8000)
-    setTimeout(EmpiezaElJuego,9000)
+    
+    setTimeout(EmpiezaElJuego,12000)
     
   }
 })
@@ -67,6 +85,7 @@ const BorrarInstrucciones=()=>{
   const Borrar = document.querySelector(".Instrucciones")
   Borrar.remove()
 }
+
 
 const EmpiezaElJuego=()=>{
 
@@ -114,6 +133,7 @@ const EmpiezaElJuego=()=>{
 
         const GameOver =()=>{
           clearInterval(Iniciar)
+          clearInterval(Nivel2)
           Canvas.remove()
           AudioNAve.pause()
           const Perdiste = new Audio()
@@ -244,7 +264,7 @@ const EmpiezaElJuego=()=>{
   
   
       const Motor = ()=>{   
-       
+
         const ImprimirLiquidados = document.querySelector("h1")
         ImprimirLiquidados.textContent = Liquidados  
         Clear()
@@ -288,13 +308,57 @@ const EmpiezaElJuego=()=>{
       })
   
     }
-
    
-     const Iniciar =  setInterval(Motor,15)
-     
-    
+      Iniciar =  setInterval(Motor,15)
+      const EmpezarNivel2=()=>{
+        AudioNAve.pause()
+        MusicaImperio.pause()
+        const ImagenLevel2 = document.createElement("img")
+        ImagenLevel2.src="/Imagenes/Nivel2-removebg-preview.png"
+        ImagenLevel2.classList.add("level2")
+        document.body.appendChild(ImagenLevel2)
+        const EliminarImagenNivel2 =()=>{
+          ImagenLevel2.remove()
+        }
+        setTimeout(EliminarImagenNivel2,5200)
+        if(!EstaEnNivel2){
+          console.log("Iniciado")
+          const Level2 = ()=>{
+            Nivel2 = setInterval(Motor,15)
+            AudioNAve.play()
+            MusicaImperio.play()
+
+          }
+          setTimeout(Level2,6000)
+          EstaEnNivel2 = true
+        }
+
+      }
+
+
        const Enemies =  ()=>{
          Frames +=1
+         
+         if(Liquidados>1 && !EstaEnNivel2){
+          clearInterval(Iniciar)
+          Enemigos = []
+          Enemigos2 = []
+          Enemigos3 = []
+          Balas = []
+          balasEnemigos1=[]
+          balasEnemigos2=[]
+          balasEnemigos3=[]
+          HalconMilenario.x = 600
+          HalconMilenario.y = 500
+
+          EmpezarNivel2()
+        }
+
+        // if(Liquidados>2){
+        //   const NavesAyuda = new Construccion()
+        // }
+     
+
          for(i = 0;i< Enemigos.length;i++ ){
            if(Enemigos[i].x >=1230 ){
             NuevaPosicionX1 = -10
@@ -317,7 +381,6 @@ const EmpiezaElJuego=()=>{
             Enemigos[i].DrawCarrito()
            }
        }
-  
        if(Frames % 50 === 0){
          Enemigos.forEach((Enemigo,index_Enemigo)=>{
           balasEnemigos1.push(new Construccion (3,40,Enemigo.x+47,Enemigo.y,"Imagenes/BalaEnemigo.png"))
@@ -336,7 +399,8 @@ const EmpiezaElJuego=()=>{
   
         })
       }
-  
+
+ 
       if(Frames % 200 === 0){
         let xMax = 1330
         let yMax = 630
@@ -373,19 +437,24 @@ const EmpiezaElJuego=()=>{
     
     
          }
-        if(Frames % 80 === 0){
-          let xMax = 1330
-          let yMax = 630
-          let xRandom = Math.floor(Math.random()*xMax)
-          let NaveAleatoria = Math.floor(Math.random()*Naves.length)
-    
-          Enemigos2.push(new Construccion (100,100,xRandom,0,Naves[NaveAleatoria]))
-          
+         console.log(Frames)
+         if(Liquidados > 20 ){
+           
+          if(Frames % 80 === 0){
+            let xMax = 1330
+            let yMax = 630
+            let xRandom = Math.floor(Math.random()*xMax)
+            let NaveAleatoria = Math.floor(Math.random()*Naves.length)
+      
+            Enemigos2.push(new Construccion (100,100,xRandom,0,Naves[NaveAleatoria]))
+            
+          }
         }
+        
   
          }
          const Enemies3 =  ()=>{
-  
+
           for(i = 0;i< Enemigos3.length;i++ ){
             if(Enemigos3[i].x >=1230 ){
              NuevaPosicionX3 = -10

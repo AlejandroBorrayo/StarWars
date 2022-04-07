@@ -230,3 +230,16 @@ h2{
     width: 80%;
     height: 500px;
 }
+.level1{
+    width: 50%;
+    height: 140px;
+    margin-right: 24%;
+    margin-top: 200px;
+}
+.level2{
+    width: 70%;
+    height: 170px;
+    margin-right: 14%;
+    margin-top: 200px;
+    position: absolute;
+}
