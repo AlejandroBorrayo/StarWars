@@ -510,7 +510,7 @@ const EmpiezaElJuego=()=>{
 
 
       const Niveles=()=>{
-        if(Liquidados>14 && !EstaEnNivel2){
+        if(Liquidados>19 && !EstaEnNivel2){
           clearInterval(Iniciar)
           Enemigos = []
           Enemigos2 = []
