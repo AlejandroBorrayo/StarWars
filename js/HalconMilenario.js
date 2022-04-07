@@ -1,9 +1,34 @@
 let Sonar;
+let Nivel2;
+let Nivel3;
+let EstaEnNivel3 = false
+let Iniciar;
+let EstaEnNivel2 = false
+let SuperPoder = false
+let EstaEnemigoFinal = false
+let DispararAmigos ;
+let DispararAmigos2 ;
+let cambio = 4;
+
+  
+const Nivel1 =()=>{
+  const level1 = document.createElement("img")
+  level1.src = "/Imagenes/Nivel1Prueba-removebg-preview.png"
+  level1.classList.add("level1")
+  document.body.appendChild(level1)
+  const EliminarNivel1 = ()=>{
+    level1.remove()
+  }
+  setTimeout(EliminarNivel1,3500)
+}
 let Frames = 0 ;
 let Enemigos = []
 let Enemigos2 = []
 let Enemigos3 = []
-let Naves = ["Imagenes/naveMaligna3-removebg-preview.png","Imagenes/naveMaligna2-removebg-preview.png"]
+let EnemigoUltimoNivel = []
+let vidaUltimoEnemigo = 50
+let DisparosEnemigoUltimoNivel = []
+let Naves = ["Imagenes/naveMaligna3-removebg-preview.png","Imagenes/naveMaligna2-removebg-preview.png","Imagenes/ghostJuego.png","Imagenes/naveMaligna1-removebg-preview.png"]
 let NuevaPosicionX1;
 let NuevaPosicionY1;
 let NuevaPosicionX2;
@@ -15,12 +40,23 @@ let Liquidados = 0
 let balasEnemigos1=[]
 let balasEnemigos2=[]
 let balasEnemigos3=[]
+let NaveAyuda1 =[]
+let NaveAyuda2 =[]
+let BalasNaveAyuda1 = []
+let BalasNaveAyuda2 = []
+let NaveAyuda1Vuelta2 =[]
+let NaveAyuda2Vuelta2 =[]
+let BalasNaveAyuda1Vuelta2 = []
+let BalasNaveAyuda2Vuelta2 = []
 let ModoDeJuego;
+let ayuda
 const AudioYouDontKnow = new Audio()
 AudioYouDontKnow.src ="/Musica/PODER.wav"
-AudioYouDontKnow.play()
 const MusicaImperio = new Audio()
 MusicaImperio.src ="/Musica/MarchaImperial.wav"
+const MusicaGame = new Audio()
+MusicaGame.src="/Musica/StarWars.wav"
+
 
 // const ModoDeJuegoTeclado = document.querySelector(".Teclado")
 // const ModoDeJuegoMouse = document.querySelector(".Mouse")
@@ -48,8 +84,10 @@ document.addEventListener("click",(e)=>{
 
     ModoDeJuego = "Mouse"
     MostrarInstrucciones()
+    setTimeout(Nivel1,8100)
     setTimeout(BorrarInstrucciones,8000)
-    setTimeout(EmpiezaElJuego,9000)
+    
+    setTimeout(EmpiezaElJuego,12000)
     
   }
 })
@@ -58,7 +96,8 @@ document.addEventListener("click",(e)=>{
 
 
 const MostrarInstrucciones=()=>{
-  const Instrucciones = document.createElement("img")
+    AudioYouDontKnow.play()
+    const Instrucciones = document.createElement("img")
   Instrucciones.src="/Imagenes/Instrucciones-removebg-preview.png"
   Instrucciones.classList.add("Instrucciones")
   document.body.appendChild(Instrucciones)
@@ -67,6 +106,7 @@ const BorrarInstrucciones=()=>{
   const Borrar = document.querySelector(".Instrucciones")
   Borrar.remove()
 }
+
 
 const EmpiezaElJuego=()=>{
 
@@ -113,7 +153,9 @@ const EmpiezaElJuego=()=>{
         }
 
         const GameOver =()=>{
+          clearInterval(Nivel3)
           clearInterval(Iniciar)
+          clearInterval(Nivel2)
           Canvas.remove()
           AudioNAve.pause()
           const Perdiste = new Audio()
@@ -171,6 +213,23 @@ const EmpiezaElJuego=()=>{
   
         const Impactos=()=>{
 
+          DisparosEnemigoUltimoNivel.forEach((balaEnemigo,index_balaEnemigo)=>{
+            if(HalconMilenario.collision(balaEnemigo)){
+              GameOver()
+            }
+          })
+
+          EnemigoUltimoNivel.forEach((enemigo,index_enemigo)=>{
+            Balas.forEach((bala,index_bala)=>{
+              if(bala.collision(enemigo)){
+                Liquidados +=1
+              }
+            })
+          })
+
+        
+
+
           balasEnemigos1.forEach((balaEnemigo,index_balaEnemigo)=>{
             if(HalconMilenario.collision(balaEnemigo)){
               GameOver()
@@ -188,6 +247,8 @@ const EmpiezaElJuego=()=>{
 
             }
           })
+
+
   
           Enemigos.forEach((enemigo,index_enemigo)=>{
             if(enemigo.y > 600 ){
@@ -203,6 +264,35 @@ const EmpiezaElJuego=()=>{
                 Liquidados+=1
               }
             }) 
+
+            BalasNaveAyuda1.forEach((bala,index_BalaAyuda1)=>{
+              if(bala.collision(enemigo)){
+                Enemigos.splice(index_enemigo,1)
+                BalasNaveAyuda1.pop()
+                Liquidados+=1
+              }
+            })
+            BalasNaveAyuda2.forEach((bala,index_BalaAyuda2)=>{
+              if(bala.collision(enemigo)){
+                Enemigos.splice(index_enemigo,1)
+                BalasNaveAyuda2.pop()
+                Liquidados+=1
+              }
+            })
+            BalasNaveAyuda1Vuelta2.forEach((bala,index_BalaAyuda1)=>{
+              if(bala.collision(enemigo)){
+                Enemigos.splice(index_enemigo,1)
+                BalasNaveAyuda1Vuelta2.pop()
+                Liquidados+=1
+              }
+            })
+            BalasNaveAyuda2Vuelta2.forEach((bala,index_BalaAyuda2)=>{
+              if(bala.collision(enemigo)){
+                Enemigos.splice(index_enemigo,1)
+                BalasNaveAyuda2Vuelta2.pop()
+                Liquidados+=1
+              }
+            })
       
           })
           Enemigos2.forEach((enemigo,index_enemigo)=>{
@@ -220,6 +310,34 @@ const EmpiezaElJuego=()=>{
                 Liquidados+=1
               } 
             }) 
+            BalasNaveAyuda1.forEach((bala,index_BalaAyuda1)=>{
+              if(bala.collision(enemigo)){
+                Enemigos2.splice(index_enemigo,1)
+                BalasNaveAyuda1.pop()
+                Liquidados+=1
+              }
+            })
+            BalasNaveAyuda2.forEach((bala,index_BalaAyuda2)=>{
+              if(bala.collision(enemigo)){
+                Enemigos2.splice(index_enemigo,1)
+                BalasNaveAyuda2.pop()
+                Liquidados+=1
+              }
+            })
+            BalasNaveAyuda1Vuelta2.forEach((bala,index_BalaAyuda1)=>{
+              if(bala.collision(enemigo)){
+                Enemigos2.splice(index_enemigo,1)
+                BalasNaveAyuda1Vuelta2.pop()
+                Liquidados+=1
+              }
+            })
+            BalasNaveAyuda2Vuelta2.forEach((bala,index_BalaAyuda2)=>{
+              if(bala.collision(enemigo)){
+                Enemigos2.splice(index_enemigo,1)
+                BalasNaveAyuda2Vuelta2.pop()
+                Liquidados+=1
+              }
+            })
       
           })
           Enemigos3.forEach((enemigo,index_enemigo)=>{
@@ -237,17 +355,80 @@ const EmpiezaElJuego=()=>{
                 Liquidados+=1
               } 
             }) 
+            BalasNaveAyuda1.forEach((bala,index_BalaAyuda1)=>{
+              if(bala.collision(enemigo)){
+                Enemigos3.splice(index_enemigo,1)
+                BalasNaveAyuda1.pop()
+                Liquidados+=1
+              }
+            })
+            BalasNaveAyuda2.forEach((bala,index_BalaAyuda2)=>{
+              if(bala.collision(enemigo)){
+                Enemigos3.splice(index_enemigo,1)
+                BalasNaveAyuda2.pop()
+                Liquidados+=1
+              }
+            })
+            BalasNaveAyuda1Vuelta2.forEach((bala,index_BalaAyuda1)=>{
+              if(bala.collision(enemigo)){
+                Enemigos3.splice(index_enemigo,1)
+                BalasNaveAyuda1.pop()
+                Liquidados+=1
+              }
+            })
+            BalasNaveAyuda2Vuelta2.forEach((bala,index_BalaAyuda2)=>{
+              if(bala.collision(enemigo)){
+                Enemigos3.splice(index_enemigo,1)
+                BalasNaveAyuda2Vuelta2.pop()
+                Liquidados+=1
+              }
+            })
       
           })
           
         }
+        const DisparoEnemigoFinal=()=>{
+          if(EnemigoUltimoNivel.length>0 && Frames % 70 === 0){
+            EnemigoUltimoNivel.forEach(Enemigo=>{
+              DisparosEnemigoUltimoNivel.push(new Construccion (3,40,Enemigo.x+20,Enemigo.y+180,"Imagenes/BalaEnemigo.png"))
+              DisparosEnemigoUltimoNivel.push(new Construccion (3,40,Enemigo.x+238,Enemigo.y+180,"Imagenes/BalaEnemigo.png"))
+          })
+          
+          }
+        }
   
   
       const Motor = ()=>{   
-       
+
         const ImprimirLiquidados = document.querySelector("h1")
         ImprimirLiquidados.textContent = Liquidados  
         Clear()
+        Niveles()
+        Poder()
+        Poder2()
+        EnemigoFinal()
+        DisparoEnemigoFinal()
+
+        if(EnemigoUltimoNivel.length>0){
+          EnemigoUltimoNivel.forEach(enemigo=>{
+            enemigo.DrawCarrito()
+
+          })
+          
+        }
+        if(DisparosEnemigoUltimoNivel.length){
+          DisparosEnemigoUltimoNivel.forEach(bala=>{
+            bala.DrawCarrito()
+            bala.DisparoUltimoEnemigo()
+          })
+        }
+ 
+
+        BalasNaveAyuda1.forEach(bala=>{
+          bala.DrawCarrito()
+          bala.DisparoAyuda1()
+        })
+
         Balas.forEach(bala=>{
         bala.DrawCarrito()
         bala.Disparo()
@@ -271,30 +452,175 @@ const EmpiezaElJuego=()=>{
       Enemies2()
       Enemies3()
   
-      balasEnemigos1.forEach((bala,index_balaEnemigo)=>{
-        if (bala.y>300){
-          balasEnemigos1.splice(index_balaEnemigo)
-        }
-      })
-      balasEnemigos2.forEach((bala,index_balaEnemigo)=>{
-        if (bala.y>600){
-          balasEnemigos1.splice(index_balaEnemigo)
-        }
-      })
-      balasEnemigos3.forEach((bala,index_balaEnemigo)=>{
-        if (bala.y>600){
-          balasEnemigos1.splice(index_balaEnemigo)
-        }
-      })
   
     }
 
    
-     const Iniciar =  setInterval(Motor,15)
-     
-    
+      Iniciar =  setInterval(Motor,15)
+
+      const EmpezarNivel2=()=>{
+        AudioNAve.pause()
+        MusicaImperio.pause()
+        const ImagenLevel2 = document.createElement("img")
+        ImagenLevel2.src="/Imagenes/Nivel2.pngPrueba-removebg-preview.png"
+        ImagenLevel2.classList.add("level2")
+        document.body.appendChild(ImagenLevel2)
+        const EliminarImagenNivel2 =()=>{
+          ImagenLevel2.remove()
+        }
+        setTimeout(EliminarImagenNivel2,5200)
+        if(!EstaEnNivel2){
+          console.log("Iniciado")
+          const Level2 = ()=>{
+            Nivel2 = setInterval(Motor,15)
+            AudioNAve.play()
+            MusicaImperio.play()
+
+          }
+          setTimeout(Level2,6000)
+          EstaEnNivel2 = true
+        }
+      }
+      const EmpezarNivel3 = ()=>{
+        if(!EstaEnNivel3){
+          AudioNAve.pause()
+          MusicaImperio.pause()
+          const ImagenLevel3 = document.createElement("img")
+          ImagenLevel3.src="/Imagenes/nivel3-removebg-preview (1).png"
+          ImagenLevel3.classList.add("level2")
+          document.body.appendChild(ImagenLevel3)
+          const EliminarImagenNivel3 =()=>{
+            ImagenLevel3.remove()
+          }
+          setTimeout(EliminarImagenNivel3,5200)
+          if(!EstaEnNivel3){
+            console.log("Iniciado")
+            const Level3 = ()=>{
+              Nivel3 = setInterval(Motor,15)
+              AudioNAve.play()
+              MusicaImperio.play()
+  
+            }
+            setTimeout(Level3,6000)
+            EstaEnNivel3 = true
+          }
+        }
+      }
+      const Niveles=()=>{
+        if(Liquidados>9 && !EstaEnNivel2){
+          clearInterval(Iniciar)
+          Enemigos = []
+          Enemigos2 = []
+          Enemigos3 = []
+          Balas = []
+          balasEnemigos1=[]
+          balasEnemigos2=[]
+          balasEnemigos3=[]
+          HalconMilenario.x = 600
+          HalconMilenario.y = 500
+
+          EmpezarNivel2()
+        }
+
+        if(Liquidados>19 && !EstaEnNivel3){
+          clearInterval(Nivel2)
+          Enemigos = []
+          Enemigos2 = []
+          Enemigos3 = []
+          Balas = []
+          balasEnemigos1=[]
+          balasEnemigos2=[]
+          balasEnemigos3=[]
+          HalconMilenario.x = 600
+          HalconMilenario.y = 500
+          EmpezarNivel3()
+        }
+
+      }
+
+
+      const Poder = ()=>{
+        
+        if(Frames === 400){
+          NaveAyuda1.push(new Construccion(100,100,0,0,"Imagenes/CazaAyuda.png"))
+          NaveAyuda2.push(new Construccion(100,100,1220,540,"Imagenes/interceptorAyuda.png"))    
+        }
+                
+        if(NaveAyuda1.length>0 && NaveAyuda2.length>0){
+          
+          NaveAyuda1.forEach(nave=>{
+            if( nave.y>600){
+              NaveAyuda1.pop()
+            }
+            nave.DrawCarrito()
+            nave.MovimientoAyuda1()
+            BalasNaveAyuda1.forEach(bala=>{
+              bala.DrawCarrito()
+              bala.DisparoAyuda1()
+            })   
+          })
+          NaveAyuda2.forEach(nave=>{
+            if( nave.y<0 ){
+              NaveAyuda2.pop()
+            }
+            nave.DrawCarrito()
+            nave.MovimientoAyuda2()
+            BalasNaveAyuda2.forEach(bala=>{
+              bala.DrawCarrito()
+              bala.DisparoAyuda2()
+            })      
+          })
+        } else {
+          DisparoAyuda1 = []
+          DisparoAyuda2 = []
+        }
+      }
+      const Poder2 = ()=>{
+        
+        if(Frames === 1500){
+          NaveAyuda1Vuelta2.push(new Construccion(100,100,0,540,"Imagenes/CazaAyuda.png"))
+          NaveAyuda2Vuelta2.push(new Construccion(100,100,1220,0,"Imagenes/interceptorAyuda.png"))    
+        }
+                
+        if(NaveAyuda1Vuelta2.length>0 && NaveAyuda2Vuelta2.length>0){
+          
+          NaveAyuda1Vuelta2.forEach(nave=>{
+            if( nave.y>600){
+              NaveAyuda1Vuelta2.pop()
+            }
+            nave.DrawCarrito()
+            nave.MovimientoAyuda2()
+            BalasNaveAyuda1Vuelta2.forEach(bala=>{
+              bala.DrawCarrito()
+              bala.DisparoAyuda1()
+            })   
+          })
+          NaveAyuda2Vuelta2.forEach(nave=>{
+            if( nave.y<0 ){
+              NaveAyuda2Vuelta2.pop()
+            }
+            nave.DrawCarrito()
+            nave.MovimientoAyuda1()
+            BalasNaveAyuda2Vuelta2.forEach(bala=>{
+              bala.DrawCarrito()
+              bala.DisparoAyuda2()
+            })      
+          })
+        } else {
+          DisparoAyuda1Vuelta1 = []
+          DisparoAyuda2Vuelta2 = []
+        }
+        if (Frames ===1680){
+         clearInterval(DispararAmigos2)
+        }
+      
+      }
+
+
+
        const Enemies =  ()=>{
          Frames +=1
+
          for(i = 0;i< Enemigos.length;i++ ){
            if(Enemigos[i].x >=1230 ){
             NuevaPosicionX1 = -10
@@ -317,7 +643,6 @@ const EmpiezaElJuego=()=>{
             Enemigos[i].DrawCarrito()
            }
        }
-  
        if(Frames % 50 === 0){
          Enemigos.forEach((Enemigo,index_Enemigo)=>{
           balasEnemigos1.push(new Construccion (3,40,Enemigo.x+47,Enemigo.y,"Imagenes/BalaEnemigo.png"))
@@ -336,16 +661,18 @@ const EmpiezaElJuego=()=>{
   
         })
       }
-  
-      if(Frames % 200 === 0){
+
+ 
+      if(Frames % 200 === 0 && Liquidados <20){
         let xMax = 1330
         let yMax = 630
         let xRandom = Math.floor(Math.random()*xMax)
         let NaveAleatoria = Math.floor(Math.random()*Naves.length)
   
-        Enemigos.push(new Construccion (100,100,xRandom,-0,Naves[NaveAleatoria]))
+        Enemigos.push(new Construccion (100,100,xRandom,0,Naves[NaveAleatoria]))
         
       }
+      
        }
        const Enemies2 =  ()=>{
   
@@ -373,19 +700,25 @@ const EmpiezaElJuego=()=>{
     
     
          }
-        if(Frames % 80 === 0){
-          let xMax = 1330
-          let yMax = 630
-          let xRandom = Math.floor(Math.random()*xMax)
-          let NaveAleatoria = Math.floor(Math.random()*Naves.length)
-    
-          Enemigos2.push(new Construccion (100,100,xRandom,0,Naves[NaveAleatoria]))
-          
+         console.log(Frames)
+         if(Liquidados > 10 && Liquidados <20 ){
+           
+          if(Frames % 80 === 0){
+            let xMax = 1330
+            let yMax = 630
+            let xRandom = Math.floor(Math.random()*xMax)
+            console.log(xRandom)
+            let NaveAleatoria = Math.floor(Math.random()*Naves.length)
+      
+            Enemigos2.push(new Construccion (100,100,xRandom,0,Naves[NaveAleatoria]))
+            
+          }
         }
+        
   
          }
          const Enemies3 =  ()=>{
-  
+
           for(i = 0;i< Enemigos3.length;i++ ){
             if(Enemigos3[i].x >=1230 ){
              NuevaPosicionX3 = -10
@@ -410,7 +743,7 @@ const EmpiezaElJuego=()=>{
    
    
         }
-       if(Frames % 150 === 0){
+       if(Frames % 150 === 0 && Liquidados<20){
          console.log("Es divisible entre 100")
          let xMax = 1330
          let yMax = 630
@@ -421,6 +754,35 @@ const EmpiezaElJuego=()=>{
        }
   
         }
+
+        const EnemigoFinal=()=>{
+          if(Liquidados>=20 && !EstaEnemigoFinal){
+            NuevoEnemigoFinal()
+          }
+
+          if(Liquidados>50){
+            Ganaste()
+
+          }
+        }
+        
+        const Ganaste = ()=>{
+          clearInterval(Nivel3)
+          Canvas.remove()
+
+          AudioNAve.pause()
+          MusicaGame.play()
+          console.log("hola")
+          const ImagenGanaste =  document.createElement("img")
+          ImagenGanaste.src = "/Imagenes/Ganaste-removebg-preview.png"
+          ImagenGanaste.classList.add("Ganaste")
+          document.body.appendChild(ImagenGanaste)
+          const IraMenu =()=>{
+            window.location.href ="/index.html"
+          }
+          setTimeout(IraMenu, 20000)   
+        }
+
     class Construccion{
       constructor(width,height,x,y, url){
         this.width = width
@@ -442,11 +804,26 @@ const EmpiezaElJuego=()=>{
           this.x +=this.velocidadX
           this.y +=this.velocidadY
       }
+      MovimientoAyuda1(){
+        this.y += 2
+      }
+      MovimientoAyuda2(){
+        this.y -= 2
+      }
+      DisparoAyuda1(){
+        this.x +=8
+      }
+      DisparoAyuda2(){
+        this.x +=-8
+      }
       Disparo(){
         this.y -= 8
       }
       DisparoEnemigo(){
         this.y += 8
+      }
+      DisparoUltimoEnemigo(){
+        this.y += 7
       }
   
       collision(item){
@@ -458,6 +835,7 @@ const EmpiezaElJuego=()=>{
             this.y + this.height > item.y
         )
     }
+
     }
    
     const Calabera = new Construccion (100,100,3,3,"Imagenes/Calabera-removebg-preview.png")
@@ -465,8 +843,19 @@ const EmpiezaElJuego=()=>{
     
   
     
-    const HalconMilenario = new Construccion(100,100,225,500,"Imagenes/milenario-removebg-preview.png")
+    const HalconMilenario = new Construccion(100,100,225,500,"/Imagenes/milenario-removebg-preview.png")
     HalconMilenario.DrawCarrito()
+
+    const NuevoEnemigoFinal=() =>{
+       EnemigoUltimoNivel.push(new Construccion(250,250,225,0,"Imagenes/naveMaligna1-removebg-preview.png"))
+       EnemigoUltimoNivel.forEach(enemigo=>{
+        enemigo.DrawCarrito()
+       })
+      EstaEnemigoFinal = true 
+    }
+
+    
+
 
     if(ModoDeJuego === "Teclado" ){
       document.addEventListener("keydown",(evento)=>{
@@ -504,7 +893,8 @@ const EmpiezaElJuego=()=>{
   
       
     } else {
-      document.addEventListener("click",()=>{
+      document.addEventListener("click",(e)=>{
+        e.preventDefault()
         Balas.push( new Construccion (3,40,HalconMilenario.x+47,HalconMilenario.y,"Imagenes/Luz.png"))
         let Disparo = new Audio()
         Disparo.src = "../Musica/Disparo.wav"
@@ -518,6 +908,42 @@ const EmpiezaElJuego=()=>{
     }
 
     console.log(ModoDeJuego)
+
+    const Disparar=()=>{
+      if(NaveAyuda1.length>0){
+        NaveAyuda1.forEach(nave=>{
+          BalasNaveAyuda1.push(new Construccion(40,3,nave.x+93,nave.y+48,"Imagenes/LuzAyuda.png"))
+          })
+      }
+      if(NaveAyuda2.length>0){
+        NaveAyuda2.forEach(nave=>{
+          BalasNaveAyuda2.push(new Construccion(40,3,nave.x-17,nave.y+52,"Imagenes/LuzAyuda.png"))
+          })
+      }
+    }
+    const Disparar2=()=>{
+      if(NaveAyuda1Vuelta2.length>0){
+        NaveAyuda1Vuelta2.forEach(nave=>{
+          BalasNaveAyuda1Vuelta2.push(new Construccion(40,3,nave.x+93,nave.y+48,"Imagenes/LuzAyuda.png"))
+          })
+      }
+      if(NaveAyuda2Vuelta2.length>0){
+        NaveAyuda2Vuelta2.forEach(nave=>{
+          BalasNaveAyuda2Vuelta2.push(new Construccion(40,3,nave.x-17,nave.y+52,"Imagenes/LuzAyuda.png"))
+          })
+      }
+    }
     
+     DispararAmigos = setInterval(Disparar,200) 
+     const RemoverDispararAmigos=()=>{
+      clearInterval(DispararAmigos)
+     }
+    setTimeout(RemoverDispararAmigos,9050)
+
+    DispararAmigos2 =  setInterval(Disparar2,200)
+    
+
 }
+
+
 

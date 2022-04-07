@@ -1,13 +1,19 @@
 let Sonar;
 let Nivel2;
+let Nivel3;
+let EstaEnNivel3 = false
 let Iniciar;
 let EstaEnNivel2 = false
 let SuperPoder = false
+let EstaEnemigoFinal = false
 let DispararAmigos ;
 let DispararAmigos2 ;
+let cambio = 4;
+
+  
 const Nivel1 =()=>{
   const level1 = document.createElement("img")
-  level1.src = "/Imagenes/Nivel1-removebg-preview.png"
+  level1.src = "/Imagenes/Nivel1Prueba-removebg-preview.png"
   level1.classList.add("level1")
   document.body.appendChild(level1)
   const EliminarNivel1 = ()=>{
@@ -19,7 +25,9 @@ let Frames = 0 ;
 let Enemigos = []
 let Enemigos2 = []
 let Enemigos3 = []
-
+let EnemigoUltimoNivel = []
+let vidaUltimoEnemigo = 50
+let DisparosEnemigoUltimoNivel = []
 let Naves = ["Imagenes/naveMaligna3-removebg-preview.png","Imagenes/naveMaligna2-removebg-preview.png","Imagenes/ghostJuego.png","Imagenes/naveMaligna1-removebg-preview.png"]
 let NuevaPosicionX1;
 let NuevaPosicionY1;
@@ -46,6 +54,8 @@ const AudioYouDontKnow = new Audio()
 AudioYouDontKnow.src ="/Musica/PODER.wav"
 const MusicaImperio = new Audio()
 MusicaImperio.src ="/Musica/MarchaImperial.wav"
+const MusicaGame = new Audio()
+MusicaGame.src="/Musica/StarWars.wav"
 
 
 // const ModoDeJuegoTeclado = document.querySelector(".Teclado")
@@ -143,6 +153,7 @@ const EmpiezaElJuego=()=>{
         }
 
         const GameOver =()=>{
+          clearInterval(Nivel3)
           clearInterval(Iniciar)
           clearInterval(Nivel2)
           Canvas.remove()
@@ -202,7 +213,21 @@ const EmpiezaElJuego=()=>{
   
         const Impactos=()=>{
 
+          DisparosEnemigoUltimoNivel.forEach((balaEnemigo,index_balaEnemigo)=>{
+            if(HalconMilenario.collision(balaEnemigo)){
+              GameOver()
+            }
+          })
 
+          EnemigoUltimoNivel.forEach((enemigo,index_enemigo)=>{
+            Balas.forEach((bala,index_bala)=>{
+              if(bala.collision(enemigo)){
+                Liquidados +=1
+              }
+            })
+          })
+
+        
 
 
           balasEnemigos1.forEach((balaEnemigo,index_balaEnemigo)=>{
@@ -222,6 +247,8 @@ const EmpiezaElJuego=()=>{
 
             }
           })
+
+
   
           Enemigos.forEach((enemigo,index_enemigo)=>{
             if(enemigo.y > 600 ){
@@ -237,6 +264,7 @@ const EmpiezaElJuego=()=>{
                 Liquidados+=1
               }
             }) 
+
             BalasNaveAyuda1.forEach((bala,index_BalaAyuda1)=>{
               if(bala.collision(enemigo)){
                 Enemigos.splice(index_enemigo,1)
@@ -359,6 +387,15 @@ const EmpiezaElJuego=()=>{
           })
           
         }
+        const DisparoEnemigoFinal=()=>{
+          if(EnemigoUltimoNivel.length>0 && Frames % 70 === 0){
+            EnemigoUltimoNivel.forEach(Enemigo=>{
+              DisparosEnemigoUltimoNivel.push(new Construccion (3,40,Enemigo.x+20,Enemigo.y+180,"Imagenes/BalaEnemigo.png"))
+              DisparosEnemigoUltimoNivel.push(new Construccion (3,40,Enemigo.x+238,Enemigo.y+180,"Imagenes/BalaEnemigo.png"))
+          })
+          
+          }
+        }
   
   
       const Motor = ()=>{   
@@ -369,6 +406,24 @@ const EmpiezaElJuego=()=>{
         Niveles()
         Poder()
         Poder2()
+        EnemigoFinal()
+        DisparoEnemigoFinal()
+
+        if(EnemigoUltimoNivel.length>0){
+          EnemigoUltimoNivel.forEach(enemigo=>{
+            enemigo.DrawCarrito()
+
+          })
+          
+        }
+        if(DisparosEnemigoUltimoNivel.length){
+          DisparosEnemigoUltimoNivel.forEach(bala=>{
+            bala.DrawCarrito()
+            bala.DisparoUltimoEnemigo()
+          })
+        }
+ 
+
         BalasNaveAyuda1.forEach(bala=>{
           bala.DrawCarrito()
           bala.DisparoAyuda1()
@@ -399,13 +454,15 @@ const EmpiezaElJuego=()=>{
   
   
     }
+
    
       Iniciar =  setInterval(Motor,15)
+
       const EmpezarNivel2=()=>{
         AudioNAve.pause()
         MusicaImperio.pause()
         const ImagenLevel2 = document.createElement("img")
-        ImagenLevel2.src="/Imagenes/Nivel2-removebg-preview.png"
+        ImagenLevel2.src="/Imagenes/Nivel2.pngPrueba-removebg-preview.png"
         ImagenLevel2.classList.add("level2")
         document.body.appendChild(ImagenLevel2)
         const EliminarImagenNivel2 =()=>{
@@ -423,15 +480,70 @@ const EmpiezaElJuego=()=>{
           setTimeout(Level2,6000)
           EstaEnNivel2 = true
         }
+      }
+      const EmpezarNivel3 = ()=>{
+        if(!EstaEnNivel3){
+          AudioNAve.pause()
+          MusicaImperio.pause()
+          const ImagenLevel3 = document.createElement("img")
+          ImagenLevel3.src="/Imagenes/nivel3-removebg-preview (1).png"
+          ImagenLevel3.classList.add("level2")
+          document.body.appendChild(ImagenLevel3)
+          const EliminarImagenNivel3 =()=>{
+            ImagenLevel3.remove()
+          }
+          setTimeout(EliminarImagenNivel3,5200)
+          if(!EstaEnNivel3){
+            console.log("Iniciado")
+            const Level3 = ()=>{
+              Nivel3 = setInterval(Motor,15)
+              AudioNAve.play()
+              MusicaImperio.play()
+  
+            }
+            setTimeout(Level3,6000)
+            EstaEnNivel3 = true
+          }
+        }
+      }
+      const Niveles=()=>{
+        if(Liquidados>9 && !EstaEnNivel2){
+          clearInterval(Iniciar)
+          Enemigos = []
+          Enemigos2 = []
+          Enemigos3 = []
+          Balas = []
+          balasEnemigos1=[]
+          balasEnemigos2=[]
+          balasEnemigos3=[]
+          HalconMilenario.x = 600
+          HalconMilenario.y = 500
+
+          EmpezarNivel2()
+        }
+
+        if(Liquidados>19 && !EstaEnNivel3){
+          clearInterval(Nivel2)
+          Enemigos = []
+          Enemigos2 = []
+          Enemigos3 = []
+          Balas = []
+          balasEnemigos1=[]
+          balasEnemigos2=[]
+          balasEnemigos3=[]
+          HalconMilenario.x = 600
+          HalconMilenario.y = 500
+          EmpezarNivel3()
+        }
 
       }
 
 
       const Poder = ()=>{
         
-        if(Frames === 1000){
+        if(Frames === 400){
           NaveAyuda1.push(new Construccion(100,100,0,0,"Imagenes/CazaAyuda.png"))
-          NaveAyuda2.push(new Construccion(100,100,1220,540,"Imagenes/milenarioAyuda.png"))    
+          NaveAyuda2.push(new Construccion(100,100,1220,540,"Imagenes/milenarioAyudaCopia.png"))    
         }
                 
         if(NaveAyuda1.length>0 && NaveAyuda2.length>0){
@@ -465,9 +577,9 @@ const EmpiezaElJuego=()=>{
       }
       const Poder2 = ()=>{
         
-        if(Frames === 3200){
+        if(Frames === 1500){
           NaveAyuda1Vuelta2.push(new Construccion(100,100,0,540,"Imagenes/CazaAyuda.png"))
-          NaveAyuda2Vuelta2.push(new Construccion(100,100,1220,0,"Imagenes/milenarioAyuda.png"))    
+          NaveAyuda2Vuelta2.push(new Construccion(100,100,1220,0,"Imagenes/milenarioAyudaCopia.png"))    
         }
                 
         if(NaveAyuda1Vuelta2.length>0 && NaveAyuda2Vuelta2.length>0){
@@ -498,7 +610,7 @@ const EmpiezaElJuego=()=>{
           DisparoAyuda1Vuelta1 = []
           DisparoAyuda2Vuelta2 = []
         }
-        if (Frames ===3500){
+        if (Frames ===1680){
          clearInterval(DispararAmigos2)
         }
       
@@ -506,26 +618,6 @@ const EmpiezaElJuego=()=>{
 
 
 
-
-
-
-      const Niveles=()=>{
-        if(Liquidados>19 && !EstaEnNivel2){
-          clearInterval(Iniciar)
-          Enemigos = []
-          Enemigos2 = []
-          Enemigos3 = []
-          Balas = []
-          balasEnemigos1=[]
-          balasEnemigos2=[]
-          balasEnemigos3=[]
-          HalconMilenario.x = 600
-          HalconMilenario.y = 500
-
-          EmpezarNivel2()
-        }
-
-      }
        const Enemies =  ()=>{
          Frames +=1
 
@@ -571,7 +663,7 @@ const EmpiezaElJuego=()=>{
       }
 
  
-      if(Frames % 200 === 0){
+      if(Frames % 200 === 0 && Liquidados <20){
         let xMax = 1330
         let yMax = 630
         let xRandom = Math.floor(Math.random()*xMax)
@@ -609,7 +701,7 @@ const EmpiezaElJuego=()=>{
     
          }
          console.log(Frames)
-         if(Liquidados > 20 ){
+         if(Liquidados > 10 && Liquidados <20 ){
            
           if(Frames % 80 === 0){
             let xMax = 1330
@@ -651,7 +743,7 @@ const EmpiezaElJuego=()=>{
    
    
         }
-       if(Frames % 150 === 0){
+       if(Frames % 150 === 0 && Liquidados<20){
          console.log("Es divisible entre 100")
          let xMax = 1330
          let yMax = 630
@@ -662,6 +754,35 @@ const EmpiezaElJuego=()=>{
        }
   
         }
+
+        const EnemigoFinal=()=>{
+          if(Liquidados>=20 && !EstaEnemigoFinal){
+            NuevoEnemigoFinal()
+          }
+
+          if(Liquidados>50){
+            Ganaste()
+
+          }
+        }
+        
+        const Ganaste = ()=>{
+          clearInterval(Nivel3)
+          Canvas.remove()
+
+          AudioNAve.pause()
+          MusicaGame.play()
+          console.log("hola")
+          const ImagenGanaste =  document.createElement("img")
+          ImagenGanaste.src = "/Imagenes/Ganaste-removebg-preview.png"
+          ImagenGanaste.classList.add("Ganaste")
+          document.body.appendChild(ImagenGanaste)
+          const IraMenu =()=>{
+            window.location.href ="/index.html"
+          }
+          setTimeout(IraMenu, 20000)   
+        }
+
     class Construccion{
       constructor(width,height,x,y, url){
         this.width = width
@@ -701,6 +822,9 @@ const EmpiezaElJuego=()=>{
       DisparoEnemigo(){
         this.y += 8
       }
+      DisparoUltimoEnemigo(){
+        this.y += 7
+      }
   
       collision(item){
   
@@ -721,6 +845,15 @@ const EmpiezaElJuego=()=>{
     
     const HalconMilenario = new Construccion(100,100,225,500,"Imagenes/interceptorJuego_preview_rev_1.png")
     HalconMilenario.DrawCarrito()
+
+    const NuevoEnemigoFinal=() =>{
+       EnemigoUltimoNivel.push(new Construccion(250,250,225,0,"Imagenes/naveMaligna1-removebg-preview.png"))
+       EnemigoUltimoNivel.forEach(enemigo=>{
+        enemigo.DrawCarrito()
+       })
+      EstaEnemigoFinal = true 
+    }
+
     
 
 
@@ -801,13 +934,13 @@ const EmpiezaElJuego=()=>{
       }
     }
     
-     DispararAmigos = setInterval(Disparar,500) 
+     DispararAmigos = setInterval(Disparar,200) 
      const RemoverDispararAmigos=()=>{
       clearInterval(DispararAmigos)
      }
-    setTimeout(RemoverDispararAmigos,17700)
+    setTimeout(RemoverDispararAmigos,9050)
 
-    DispararAmigos2 =  setInterval(Disparar2,500)
+    DispararAmigos2 =  setInterval(Disparar2,200)
     
 
 }
